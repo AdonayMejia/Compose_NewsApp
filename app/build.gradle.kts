@@ -1,11 +1,13 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
     namespace = "com.example.compose_newsapp"
     compileSdk = 33
+
 
     defaultConfig {
         applicationId = "com.example.compose_newsapp"
@@ -18,6 +20,16 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField(
+            "String",
+            "GUARDIAN_API_BASE_URL",
+            project.property("guardianApiBaseUrl").toString()
+        )
+        buildConfigField(
+            "String",
+            "GUARDIAN_API_KEY",
+            project.property("guardianApiKey").toString()
+        )
     }
 
     buildTypes {
@@ -38,6 +50,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -67,6 +80,8 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.navigation.compose)
     implementation(libs.bundles.ktor)
+    implementation(libs.bundles.room)
+    ksp(libs.roomCompiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
