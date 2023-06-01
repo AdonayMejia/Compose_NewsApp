@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Compose_NewsApp</string>
+    <string name="navigation_description">Icon Navigation</string>
 </resources>
