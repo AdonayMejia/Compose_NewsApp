@@ -10,8 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
 import com.example.compose_newsapp.model.navigation.MainScreen
+import com.example.compose_newsapp.model.network.ApiServiceClient
 import com.example.compose_newsapp.ui.theme.Compose_NewsAppTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

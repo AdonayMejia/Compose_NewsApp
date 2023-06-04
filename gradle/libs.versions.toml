@@ -16,13 +16,17 @@ coil_compose = "2.3.0"
 kotlinx_coroutines_core = "1.6.4"
 navigation-compose = "2.5.3"
 compose_material = "1.3.1"
-ktor-version = "1.6.3"
+ktor-version = "2.3.0"
 roomRuntimeVersion = "2.5.1"
 roomCompilerVersion = "2.5.1"
 roomKtxVersion = "2.5.1"
 acompanist-pager = "0.31.3-beta"
 compose-util = "1.4.3"
-
+json-serialization = "1.5.0"
+koin-version = "3.4.1"
+koin-compose-version = "3.4.5"
+pagin-version = "3.1.1"
+pagin-compose = "1.0.0-alpha20"
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
@@ -47,44 +51,53 @@ coil_compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 kotlinx_coroutines_core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx_coroutines_core" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose"}
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-version" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor-version" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor-version" }
+ktor-client-gson = { module = "io.ktor:ktor-client-gson", version.ref = "ktor-version" }
+ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor-version" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor-version" }
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor-version" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor-version" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor-version" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor-version" }
+ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor-version" }
 roomRuntime = { module = "androidx.room:room-runtime", version.ref = "roomRuntimeVersion" }
 roomCompiler = { module = "androidx.room:room-compiler", version.ref = "roomCompilerVersion" }
 roomKtx = { module = "androidx.room:room-ktx", version.ref = "roomKtxVersion" }
 compose-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "acompanist-pager"}
 compose-util = { module = "androidx.compose.ui:ui-util", version.ref = "compose-util"}
+json-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "json-serialization" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin-version" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin-version" }
+koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin-compose-version" }
+pagin-compose = {module = "androidx.paging:paging-compose", version.ref = "pagin-compose"}
+pagin = { module = "androidx.paging:paging-runtime", version.ref = "pagin-version" }
 
 [bundles]
 ktor = [
     "ktor-client-core",
     "ktor-client-android",
     "ktor-client-serialization",
-    "ktor-client-logging"
+    "ktor-client-logging",
+    "ktor-client-cio",
+    "ktor-client-content-negotiation",
+    "ktor-client-gson",
+    "ktor-client-json",
+    "ktor-client-okhttp",
+    "ktor-serialization-kotlinx-json",
+    "ktor-server-cors"
 ]
 room = [
     "roomRuntime",
     "roomKtx"
 ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+koin = [
+    "koin-android",
+    "koin-android-compose",
+    "koin-core"
+]
+pagin = [
+    "pagin-compose",
+    "pagin",
+    "compose-pager"
+]
