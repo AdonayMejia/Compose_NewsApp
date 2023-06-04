@@ -67,7 +67,7 @@ fun SearchScreen(
     val uiState by searchViewModel.uiState.collectAsState()
     val articles = searchViewModel.articlesFlow.collectAsLazyPagingItems()
     LaunchedEffect(Unit){
-        
+
     }
     SearchScreenContent(
         searchNew = uiState.onQueryChange,
@@ -123,7 +123,10 @@ fun SearchScreenContent(
             CircularProgressIndicator(modifier = Modifier.wrapContentSize(Alignment.Center))
         } else {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(articles) { index ->
+                items(
+                    key = {it.apiUrl},
+                    items = articles,
+                ) { index ->
 //                    val article = articles[index]
                     index?.let { news ->
                     Text(text = news.webTitle)

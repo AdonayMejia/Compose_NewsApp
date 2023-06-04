@@ -10,11 +10,11 @@ import io.ktor.http.append
 
 class GuardianApiImpl(private val client:HttpClient) : GuardianApiService {
 
-    override suspend fun searchArticles(query: String, page: Int): GuardianApiResponse {
+    override suspend fun searchArticles(query: String, page: Int, pageSize:Int): GuardianApiResponse {
         return client.get(BASE_URL){
-            parameter(KEY,BuildConfig.GUARDIAN_API_KEY)
             parameter(QUERY,query)
             parameter(PAGE,page)
+            parameter(PAGE_SIZE,pageSize)
         }.body()
     }
 
