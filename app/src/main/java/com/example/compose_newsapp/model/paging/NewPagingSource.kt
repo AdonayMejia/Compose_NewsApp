@@ -2,12 +2,14 @@ package com.example.compose_newsapp.model.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.compose_newsapp.model.datamodel.Filter
 import com.example.compose_newsapp.model.datamodel.NewsModel
 import com.example.compose_newsapp.model.network.GuardianApiService
 
 class NewPagingSource(
     private val apiService: GuardianApiService,
-    private val query:String
+    private val query:String,
+    private val filter: Filter
 ) : PagingSource<Int,NewsModel>() {
 
     override fun getRefreshKey(state: PagingState<Int, NewsModel>): Int? {
@@ -20,7 +22,12 @@ class NewPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, NewsModel> {
         return try {
             val page = params.key ?: 1
-            val response = apiService.searchArticles(query = query, page = page, pageSize = params.loadSize)
+            val response = apiService.searchArticles(
+                query = query,
+                page = page,
+                pageSize = params.loadSize,
+                filter = filter
+            )
 
             LoadResult.Page(
                 data = response.response.results,

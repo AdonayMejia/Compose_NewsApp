@@ -10,7 +10,6 @@ data class NewsModel(
 
     val type: String,
 
-
     @SerialName("sectionId")
     val sectionId: String,
 
@@ -28,4 +27,21 @@ data class NewsModel(
 
     @SerialName("apiUrl")
     val apiUrl: String,
+
+    @SerialName("fields")
+    val fields:Fields
+
     )
+@Serializable
+data class Fields(
+    @SerialName("thumbnail")
+    val thumbnail:String
+)
+
+@Serializable
+data class Filter(
+    val filterName: String,
+    val section: String? = null,
+    val tag: String? = null,
+    val type: String? = null
+)

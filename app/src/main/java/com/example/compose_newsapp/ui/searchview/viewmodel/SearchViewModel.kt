@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.compose_newsapp.model.datamodel.Filter
 import com.example.compose_newsapp.model.datamodel.NewsModel
 import com.example.compose_newsapp.model.network.GuardianApiService
 import com.example.compose_newsapp.model.network.repository.GuardianRepository
@@ -21,51 +22,27 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel( private val guardianRepository: GuardianRepository) : ViewModel() {
     private val searchValue = MutableStateFlow("")
-    private var isLoading = MutableStateFlow(false)
+    private var filters = MutableStateFlow(Filter(""))
 
-//
-//    private val newsPaginatedItemProvider = combine(
-//        searchValue
-//    ){ query ->
-//        if (query.isNotEmpty()){
-//            isLoading.value = false
-//            guardianRepository.searchArticles(query = query.toString())
-//        } else{
-//            null
-//        }
-//    }.stateIn(viewModelScope, SharingStarted.Lazily,null)
 
-    private fun onQueryChange(query: String) {
-        isLoading.value = true
-        searchValue.value = query
-//            if (query.length == 1) query.trim() else query
-        isLoading.value = false
-        Log.wtf("Value","Value: ${searchValue.value}")
-    }
     @OptIn(ExperimentalCoroutinesApi::class)
-    val articlesFlow: Flow<PagingData<NewsModel>> = searchValue.flatMapLatest { query ->
-        guardianRepository.searchArticles(query)
+    val articlesFlow: Flow<PagingData<NewsModel>> = combine(searchValue, filters) { query, filter ->
+        Pair(query, filter)
+    }.flatMapLatest { (query, filter) ->
+        guardianRepository.searchArticles(query, filter)
     }.cachedIn(viewModelScope)
 
+    fun searchNews(query:String, filter:Filter){
+        searchValue.value = query
+        filters.value = filter
+    }
 
-    private val _uiState = MutableStateFlow(
+    val uiState = MutableStateFlow(
         SearchUiState(
-            articles = emptyList(),
+            news = emptyList(),
             isLoading = false,
-            onQueryChange = ::onQueryChange,
-            searchValue = searchValue
+            searchNews = ::searchNews
         )
     )
-    val uiState = _uiState.asStateFlow()
 
-//    fun searchArticles(query:String){
-//        viewModelScope.launch {
-//            _uiState.value = uiState.value.copy(isLoading = true)
-//            val response = guardianRepository.searchArticles(query)
-//            _uiState.value = SearchUiState(
-//                articles = response.response.results,
-//                isLoading = false
-//            )
-//        }
-//    }
 }

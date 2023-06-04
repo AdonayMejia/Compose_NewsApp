@@ -44,16 +44,16 @@ class ApiServiceClient {
                 connectTimeoutMillis = TIMEOUT
                 socketTimeoutMillis = TIMEOUT
             }
-            install(DefaultRequest){
-                host = BuildConfig.GUARDIAN_API_BASE_URL
-                url{
-                    protocol = URLProtocol.HTTPS
-                    parameters.append("key", BuildConfig.GUARDIAN_API_KEY)
-                }
-                contentType(ContentType.Application.Json)
+//            install(DefaultRequest){
+//                host = BuildConfig.GUARDIAN_API_BASE_URL
+//                url{
+//                    protocol = URLProtocol.HTTPS
+//                    parameters.append("key", BuildConfig.GUARDIAN_API_KEY)
+//                }
+//                contentType(ContentType.Application.Json)
             }
         }
-    }
+
 
     companion object{
         private const val TIMEOUT = 60_000L
