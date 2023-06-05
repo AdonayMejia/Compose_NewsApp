@@ -9,11 +9,15 @@ import com.example.compose_newsapp.model.datamodel.Filter
 import com.example.compose_newsapp.model.datamodel.NewsModel
 import com.example.compose_newsapp.model.network.GuardianApiService
 import com.example.compose_newsapp.model.network.repository.GuardianRepository
+import com.example.compose_newsapp.model.room.NewsEntity
+import com.example.compose_newsapp.model.room.repository.NewsRepository
 import com.example.compose_newsapp.ui.searchview.uistate.SearchUiState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -24,7 +28,6 @@ class SearchViewModel( private val guardianRepository: GuardianRepository) : Vie
     private val searchValue = MutableStateFlow("")
     private var filters = MutableStateFlow(Filter(""))
 
-
     @OptIn(ExperimentalCoroutinesApi::class)
     val articlesFlow: Flow<PagingData<NewsModel>> = combine(searchValue, filters) { query, filter ->
         Pair(query, filter)
@@ -32,7 +35,7 @@ class SearchViewModel( private val guardianRepository: GuardianRepository) : Vie
         guardianRepository.searchArticles(query, filter)
     }.cachedIn(viewModelScope)
 
-    fun searchNews(query:String, filter:Filter){
+    private fun searchNews(query:String, filter:Filter){
         searchValue.value = query
         filters.value = filter
     }
@@ -41,8 +44,12 @@ class SearchViewModel( private val guardianRepository: GuardianRepository) : Vie
         SearchUiState(
             news = emptyList(),
             isLoading = false,
-            searchNews = ::searchNews
+            searchNews = ::searchNews,
         )
     )
+
+    companion object{
+        const val UTF = "UTF-8"
+    }
 
 }

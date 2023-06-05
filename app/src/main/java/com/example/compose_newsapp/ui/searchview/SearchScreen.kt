@@ -31,11 +31,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -43,24 +47,31 @@ import androidx.paging.compose.items
 import com.example.compose_newsapp.R
 import com.example.compose_newsapp.model.datamodel.Filter
 import com.example.compose_newsapp.model.datamodel.NewsModel
+import com.example.compose_newsapp.model.room.NewsEntity
+import com.example.compose_newsapp.ui.favoriteview.viewmodel.FavoriteViewModel
 import com.example.compose_newsapp.ui.searchview.components.SearchNewsItem
 import com.example.compose_newsapp.ui.searchview.model.filtersGenerator
+import com.example.compose_newsapp.ui.searchview.uistate.SearchUiState
 import com.example.compose_newsapp.ui.searchview.viewmodel.SearchViewModel
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
 
 @Composable
 fun SearchScreen(
-    searchViewModel:SearchViewModel
+    searchViewModel:SearchViewModel,
+    favoriteViewModel: FavoriteViewModel,
+    navController:NavHostController
 ) {
     val uiState by searchViewModel.uiState.collectAsState()
     val articles = searchViewModel.articlesFlow.collectAsLazyPagingItems()
-    LaunchedEffect(Unit){
+    val favUiState by favoriteViewModel.uiState.collectAsState()
 
-    }
     SearchScreenContent(
         searchNew = uiState.searchNews,
         isLoading = uiState.isLoading,
-        articles = articles
+        articles = articles,
+        onFavClick = favUiState.addToFav,
+        navHostController = navController
     )
 }
 
@@ -68,7 +79,9 @@ fun SearchScreen(
 fun SearchScreenContent(
     searchNew:(String,Filter) -> Unit,
     isLoading:Boolean,
-    articles:LazyPagingItems<NewsModel>
+    articles:LazyPagingItems<NewsModel>,
+    onFavClick:(NewsModel) -> Unit,
+    navHostController: NavHostController
 ) {
     val query = remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
@@ -146,8 +159,12 @@ fun SearchScreenContent(
         } else {
             LazyColumn {
                 items(articles) { article ->
-                    article?.let {
-                        SearchNewsItem(article = it)
+                    article?.let { news ->
+                        SearchNewsItem(
+                            article = news,
+                            onFavClick = { onFavClick(news) },
+                            navHostController = navHostController
+                        )
                     }
                 }
                 articles.apply {

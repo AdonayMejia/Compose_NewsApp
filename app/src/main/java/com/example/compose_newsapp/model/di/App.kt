@@ -1,12 +1,21 @@
 package com.example.compose_newsapp.model.di
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
+import androidx.room.Room
 import com.example.compose_newsapp.model.network.ApiServiceClient
 import com.example.compose_newsapp.model.network.GuardianApiService
 import com.example.compose_newsapp.model.network.GuardianApiImpl
 import com.example.compose_newsapp.model.network.repository.GuardianRepository
 import com.example.compose_newsapp.model.network.repository.GuardianRepositoryImpl
+import com.example.compose_newsapp.model.room.NewsDao
+import com.example.compose_newsapp.model.room.NewsDatabase
+import com.example.compose_newsapp.model.room.repository.NewsRepository
+import com.example.compose_newsapp.model.room.repository.NewsRepositoryImpl
+import com.example.compose_newsapp.ui.favoriteview.viewmodel.FavoriteViewModel
 import com.example.compose_newsapp.ui.searchview.viewmodel.SearchViewModel
+import io.ktor.client.engine.android.Android
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -24,7 +33,18 @@ class App : Application() {
 
 val newsModule = module {
     single { ApiServiceClient().createClient()}
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            NewsDatabase::class.java, DATABASE_NAME)
+                .build()
+    }
+    single{ get<NewsDatabase>().newsDao() }
     single<GuardianApiService> { GuardianApiImpl(get()) }
     single<GuardianRepository> { GuardianRepositoryImpl(get() ) }
+    single<NewsRepository> { NewsRepositoryImpl(get()) }
     viewModel { SearchViewModel(get()) }
+    viewModel { FavoriteViewModel(get()) }
 }
+
+private const val DATABASE_NAME = "MovieDataBase"

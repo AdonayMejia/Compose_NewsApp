@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.json.serialization)
     implementation(libs.bundles.ktor)
+    implementation(libs.compose.util)
     implementation(libs.bundles.room)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.pagin)
