@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Compose_NewsApp</string>
+    <string name="navigation_description">Icon Navigation</string>
+    <string name="news_image">News Image</string>
+    <string name="filters">Select Filter:</string>
+    <string name="select_a_filter">Select one filter</string>
 </resources>
