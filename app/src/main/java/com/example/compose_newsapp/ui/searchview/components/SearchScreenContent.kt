@@ -23,6 +23,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -39,6 +41,7 @@ import com.example.compose_newsapp.R
 import com.example.compose_newsapp.model.datamodel.Filter
 import com.example.compose_newsapp.model.datamodel.NewsModel
 import com.example.compose_newsapp.ui.searchview.model.filtersGenerator
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @Composable
@@ -47,14 +50,16 @@ fun SearchScreenContent(
     articles: LazyPagingItems<NewsModel>,
     isLoading:Boolean,
     onFavClick: (NewsModel) -> Unit,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    saveSelectedFilter:(Filter) -> Unit,
+    selectedFilter:Flow<Filter>
 ) {
     val query = remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     val markedFilter = remember { mutableStateOf(Filter("")) }
-    val filters = remember { filtersGenerator() }
+    val filtersGenerator = remember { filtersGenerator() }
     val filtersList = remember { mutableStateOf(false) }
-
+    val initialSelectedFilter by selectedFilter.collectAsState(initial = Filter(""))
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -65,7 +70,7 @@ fun SearchScreenContent(
             onValueChange = { newValue ->
                 query.value = newValue
                 scope.launch {
-                    searchNew(newValue, markedFilter.value)
+                    searchNew(newValue, initialSelectedFilter)
                 }
             },
             label = { Text("Search") },
@@ -90,34 +95,20 @@ fun SearchScreenContent(
                 )
             }
         )
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(stringResource(R.string.filters))
             Spacer(modifier = Modifier.width(8.dp))
-            Box {
-                Button(onClick = { filtersList.value = !filtersList.value }) {
-                    Text(markedFilter.value.filterName.ifEmpty { stringResource(R.string.select_a_filter) })
-                }
-                DropdownMenu(
-                    expanded = filtersList.value,
-                    onDismissRequest = { filtersList.value = false },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    filters.forEach { filter ->
-                        DropdownMenuItem(onClick = {
-                            markedFilter.value = filter
-                            filtersList.value = false
-                            scope.launch { searchNew(query.value, filter) }
 
-                        }, text = {
-                            Text(text = filter.filterName)
-                        })
-                    }
-                }
-            }
+            FilterDropDown(
+                filter = filtersGenerator,
+                setSelectedFilter = { filter ->
+                    saveSelectedFilter(filter)
+                     scope.launch { searchNew(query.value,filter) }
+                },
+                selectedFilter = initialSelectedFilter)
         }
         if (isLoading) {
             ErrorToLoadNews()
@@ -137,7 +128,8 @@ fun SearchScreenContent(
                         item {
                             CircularProgressIndicator(
                                 modifier = Modifier
-                                    .fillMaxWidth().wrapContentSize(Alignment.Center)
+                                    .fillMaxWidth()
+                                    .wrapContentSize(Alignment.Center)
                                     .padding()
                             )
                         }

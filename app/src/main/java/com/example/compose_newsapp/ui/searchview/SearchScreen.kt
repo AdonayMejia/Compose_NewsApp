@@ -24,6 +24,8 @@ fun SearchScreen(
         articles = articles,
         isLoading = uiState.isLoading,
         onFavClick = favUiState.addToFav,
-        navHostController = navController
+        navHostController = navController,
+        saveSelectedFilter = uiState.saveSelectedFilter,
+        selectedFilter = uiState.selectedFilter
     )
 }

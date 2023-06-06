@@ -11,4 +11,6 @@ data class SearchUiState(
     val news: List<NewsModel> = emptyList(),
     var isLoading: Boolean = false,
     val searchNews: (String, Filter) -> Unit,
+    val saveSelectedFilter:(Filter) -> Unit,
+    val selectedFilter:Flow<Filter>
 )

@@ -2,6 +2,7 @@ package com.example.compose_newsapp.model.di
 
 import android.app.Application
 import androidx.room.Room
+import com.example.compose_newsapp.model.datastore.DataStoreManager
 import com.example.compose_newsapp.model.network.ApiServiceClient
 import com.example.compose_newsapp.model.network.GuardianApiImpl
 import com.example.compose_newsapp.model.network.GuardianApiService
@@ -40,7 +41,8 @@ val newsModule = module {
     single<GuardianApiService> { GuardianApiImpl(get()) }
     single<GuardianRepository> { GuardianRepositoryImpl(get()) }
     single<NewsRepository> { NewsRepositoryImpl(get()) }
-    viewModel { SearchViewModel(get()) }
+    single { DataStoreManager(androidContext()) }
+    viewModel { SearchViewModel(get(),get()) }
     viewModel { FavoriteViewModel(get()) }
 }
 
