@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -43,6 +45,7 @@ import kotlinx.coroutines.launch
 fun SearchScreenContent(
     searchNew: (String, Filter) -> Unit,
     articles: LazyPagingItems<NewsModel>,
+    isLoading:Boolean,
     onFavClick: (NewsModel) -> Unit,
     navHostController: NavHostController
 ) {
@@ -116,40 +119,31 @@ fun SearchScreenContent(
                 }
             }
         }
-
-        LazyColumn {
-            items(articles) { article ->
-                article?.let { news ->
-                    SearchNewsItem(
-                        article = news,
-                        onFavClick = { onFavClick(news) },
-                        navHostController = navHostController
-                    )
+        if (isLoading) {
+            ErrorToLoadNews()
+        } else {
+            LazyColumn {
+                items(articles) { article ->
+                    article?.let { news ->
+                        SearchNewsItem(
+                            article = news,
+                            onFavClick = { onFavClick(news) },
+                            navHostController = navHostController
+                        )
+                    }
+                }
+                articles.apply {
+                    if (loadState.append is LoadState.Loading) {
+                        item {
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .fillMaxWidth().wrapContentSize(Alignment.Center)
+                                    .padding()
+                            )
+                        }
+                    }
                 }
             }
-        }
-        when (val state = articles.loadState.refresh) {
-            is LoadState.Error -> {
-                ErrorToLoadNews()
-            }
-
-            is LoadState.Loading -> {
-                LoadNews()
-            }
-
-            else -> {}
-        }
-
-        when (val state = articles.loadState.append) {
-            is LoadState.Error -> {
-                ErrorToLoadNews()
-            }
-
-            is LoadState.Loading -> {
-                ErrorPagination()
-            }
-
-            else -> {}
         }
     }
 }

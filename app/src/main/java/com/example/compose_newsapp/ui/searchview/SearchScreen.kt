@@ -22,6 +22,7 @@ fun SearchScreen(
     SearchScreenContent(
         searchNew = uiState.searchNews,
         articles = articles,
+        isLoading = uiState.isLoading,
         onFavClick = favUiState.addToFav,
         navHostController = navController
     )
