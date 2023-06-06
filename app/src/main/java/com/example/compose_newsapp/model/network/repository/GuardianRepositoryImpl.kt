@@ -14,7 +14,7 @@ class GuardianRepositoryImpl(private val apiService: GuardianApiService): Guardi
     override fun searchArticles(query: String, filter:Filter): Flow<PagingData<NewsModel>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 20,
+                pageSize = 5,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {

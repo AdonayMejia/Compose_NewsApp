@@ -1,6 +1,7 @@
 package com.example.compose_newsapp.ui.favoriteview
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,22 +27,26 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.compose_newsapp.model.room.NewsEntity
 import com.example.compose_newsapp.ui.favoriteview.viewmodel.FavoriteViewModel
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import java.net.URLEncoder
 
 @Composable
 fun FavoriteScreen(
-    viewModel:FavoriteViewModel
+    viewModel:FavoriteViewModel,
+    navHostController: NavHostController
 ) {
-    FavoriteScreenContent(viewModel = viewModel)
+    FavoriteScreenContent(viewModel = viewModel, navHostController = navHostController)
 }
 
 @Composable
 fun FavoriteScreenContent(
-    viewModel: FavoriteViewModel
+    viewModel: FavoriteViewModel,
+    navHostController: NavHostController
 ) {
     val favNews by viewModel.new.collectAsState()
     val pagerState = rememberPagerState()
@@ -72,19 +77,24 @@ fun FavoriteScreenContent(
                     }
             ) {
                 val movie = favNews[page]
-                Item(movie = movie, delete = favoriteUiState.deleteNew)
+                Item(movie = movie, delete = favoriteUiState.deleteNew, navHostController = navHostController)
             }
         }
     }
 }
 
 @Composable
-fun Item(movie: NewsEntity,delete:(String) -> Unit) {
+fun Item(movie: NewsEntity,delete:(String) -> Unit, navHostController: NavHostController) {
+    val url = URLEncoder.encode(movie.webUrl,"UTF-8")
+
     Box {
         Image(
             painter = rememberAsyncImagePainter(movie.fields),
             contentDescription = "Movie Poster",
             modifier = Modifier.fillMaxSize()
+                .clickable {
+                    navHostController.navigate("DetailScreen/${url}")
+                }
         )
         FloatingActionButton(onClick = { delete(movie.itemId) },
             content = {

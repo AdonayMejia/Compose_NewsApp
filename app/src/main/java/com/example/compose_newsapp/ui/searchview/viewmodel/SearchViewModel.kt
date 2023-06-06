@@ -48,8 +48,4 @@ class SearchViewModel( private val guardianRepository: GuardianRepository) : Vie
         )
     )
 
-    companion object{
-        const val UTF = "UTF-8"
-    }
-
 }

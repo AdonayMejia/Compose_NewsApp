@@ -40,7 +40,8 @@ fun BottomNavGraph(
         }
         composable(route = BottomBarScreen.FavoriteScreen.route){
             FavoriteScreen(
-                viewModel = favoriteViewModel
+                viewModel = favoriteViewModel,
+                navHostController = navController
             )
         }
         composable(
