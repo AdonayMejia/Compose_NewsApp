@@ -1,7 +1,6 @@
 package com.example.compose_newsapp.ui.searchview.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,10 +14,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -48,17 +44,16 @@ import kotlinx.coroutines.launch
 fun SearchScreenContent(
     searchNew: (String, Filter) -> Unit,
     articles: LazyPagingItems<NewsModel>,
-    isLoading:Boolean,
+    isLoading: Boolean,
     onFavClick: (NewsModel) -> Unit,
     navHostController: NavHostController,
-    saveSelectedFilter:(Filter) -> Unit,
-    selectedFilter:Flow<Filter>
+    saveSelectedFilter: (Filter) -> Unit,
+    selectedFilter: Flow<Filter>
 ) {
     val query = remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     val markedFilter = remember { mutableStateOf(Filter("")) }
     val filtersGenerator = remember { filtersGenerator() }
-    val filtersList = remember { mutableStateOf(false) }
     val initialSelectedFilter by selectedFilter.collectAsState(initial = Filter(""))
     Column(
         modifier = Modifier
@@ -106,9 +101,10 @@ fun SearchScreenContent(
                 filter = filtersGenerator,
                 setSelectedFilter = { filter ->
                     saveSelectedFilter(filter)
-                     scope.launch { searchNew(query.value,filter) }
+                    scope.launch { searchNew(query.value, filter) }
                 },
-                selectedFilter = initialSelectedFilter)
+                selectedFilter = initialSelectedFilter
+            )
         }
         if (isLoading) {
             ErrorToLoadNews()

@@ -10,7 +10,7 @@ import com.example.compose_newsapp.model.datamodel.Filter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class DataStoreManager(private val context: Context) {
+class DataStoreManager(context: Context) {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = FILTER_SETTINGS)
     private val dataStore: DataStore<Preferences> = context.dataStore

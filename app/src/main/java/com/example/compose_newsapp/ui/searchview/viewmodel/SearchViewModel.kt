@@ -24,7 +24,7 @@ class SearchViewModel(
 
     private val searchValue = MutableStateFlow("")
     private var filters = MutableStateFlow(Filter(""))
-    val selectedFilter:Flow<Filter> = dataStore.getFilter()
+    private val selectedFilter:Flow<Filter> = dataStore.getFilter()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val articlesFlow: Flow<PagingData<NewsModel>> = combine(searchValue, filters) { query, filter ->
@@ -41,8 +41,6 @@ class SearchViewModel(
     private fun selectedFilter(filter: Filter){
         viewModelScope.launch {
             dataStore.setSectionFilter(filter)
-            Log.wtf("Filter","${dataStore.setSectionFilter(filter).toString()}")
-            Log.wtf("Filter","${filter.toString()}")
         }
     }
 
@@ -55,6 +53,4 @@ class SearchViewModel(
             selectedFilter = selectedFilter
         )
     )
-
-
 }
