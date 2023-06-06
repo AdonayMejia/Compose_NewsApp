@@ -28,14 +28,4 @@ sealed class BottomBarScreen(
         title = "Detail",
         icon = Icons.Default.ViewList
     )
-//    companion object {
-//        fun String.title(): String {
-//            return when (this) {
-//                SearchScreen.route -> SearchScreen.title
-//                FavoriteScreen.route -> FavoriteScreen.title
-//                DetailScreen.route -> DetailScreen.title
-//                else -> ""
-//            }
-//        }
-//    }
 }

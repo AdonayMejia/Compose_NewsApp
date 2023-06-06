@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.navigation.compose)
     implementation(libs.json.serialization)
+    implementation(libs.data.store)
     implementation(libs.bundles.ktor)
     implementation(libs.compose.util)
     implementation(libs.bundles.room)

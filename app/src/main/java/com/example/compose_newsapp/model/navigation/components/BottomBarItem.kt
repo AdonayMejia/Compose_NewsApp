@@ -15,28 +15,29 @@ import com.example.compose_newsapp.model.navigation.BottomBarScreen
 @Composable
 fun RowScope.Item(
     screen: BottomBarScreen,
-    currentDestination:NavDestination?,
+    currentDestination: NavDestination?,
     navController: NavHostController
 ) {
     NavigationBarItem(
         label = {
-                Text(
-                    text = screen.title
-                )
+            Text(
+                text = screen.title
+            )
         },
         icon = {
-               Icon(
-                   imageVector = screen.icon,
-                   contentDescription = "${R.string.navigation_description}")
+            Icon(
+                imageVector = screen.icon,
+                contentDescription = "${R.string.navigation_description}"
+            )
         },
         selected = currentDestination?.hierarchy?.any { destiny ->
             destiny.route == screen.route
         } == true,
         onClick = {
-                navController.navigate(screen.route) {
-                    popUpTo(navController.graph.findStartDestination().id)
-                    launchSingleTop = true
-                }
+            navController.navigate(screen.route) {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
+            }
         },
     )
 

@@ -21,12 +21,12 @@ fun filtersGenerator(): List<Filter> {
     return sectionFilters + typeFilters + tagFilters
 }
 
-object FiltersNames{
+object FiltersNames {
     const val SECTION_POLITICS = "politics"
     const val SECTION_TECHNOLOGY = "technology"
     const val SECTION_CULTURE = "culture"
     const val TYPE_LIVE_BLOG = "liveblog"
-    const val  TYPE_INTERACTIVE = "interactive"
+    const val TYPE_INTERACTIVE = "interactive"
     const val TAG_ENVIRONMENT_RECYCLING = "environment/recycling"
     const val TAG_POLITICS_BLOG = "politics/blog"
 }

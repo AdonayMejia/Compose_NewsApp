@@ -4,5 +4,6 @@ import com.example.compose_newsapp.model.datamodel.NewsModel
 
 data class FavoriteUiState(
     var setList: Set<String> = emptySet(),
-    val addToFav:(NewsModel) -> Unit,
-    val deleteNew:(String) -> Unit)
+    val addToFav: (NewsModel) -> Unit,
+    val deleteNew: (String) -> Unit
+)

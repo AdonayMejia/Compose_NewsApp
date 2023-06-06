@@ -1,12 +1,11 @@
 package com.example.compose_newsapp.model.datamodel
 
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class NewsModel(
-    val id : String,
+    val id: String,
 
     val type: String,
 
@@ -29,13 +28,14 @@ data class NewsModel(
     val apiUrl: String,
 
     @SerialName("fields")
-    val fields:Fields
+    val fields: Fields
 
-    )
+)
+
 @Serializable
 data class Fields(
     @SerialName("thumbnail")
-    val thumbnail:String
+    val thumbnail: String
 )
 
 @Serializable

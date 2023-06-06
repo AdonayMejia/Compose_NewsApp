@@ -7,11 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
-fun DetailScreen(webUrl:String) {
+fun DetailScreen(webUrl: String) {
     DetailScreenContent(webUrl = webUrl)
 }
 

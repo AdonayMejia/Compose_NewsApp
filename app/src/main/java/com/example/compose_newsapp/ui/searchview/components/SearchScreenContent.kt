@@ -41,9 +41,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreenContent(
-    searchNew:(String, Filter) -> Unit,
+    searchNew: (String, Filter) -> Unit,
     articles: LazyPagingItems<NewsModel>,
-    onFavClick:(NewsModel) -> Unit,
+    onFavClick: (NewsModel) -> Unit,
     navHostController: NavHostController
 ) {
     val query = remember { mutableStateOf("") }
@@ -52,15 +52,17 @@ fun SearchScreenContent(
     val filters = remember { filtersGenerator() }
     val filtersList = remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier
-        .padding(16.dp)
-        .fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()
+    ) {
         TextField(
             value = query.value,
             onValueChange = { newValue ->
                 query.value = newValue
                 scope.launch {
-                    searchNew(newValue,markedFilter.value)
+                    searchNew(newValue, markedFilter.value)
                 }
             },
             label = { Text("Search") },
@@ -68,7 +70,7 @@ fun SearchScreenContent(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
                 scope.launch {
-                    searchNew(query.value,markedFilter.value)
+                    searchNew(query.value, markedFilter.value)
                 }
             }),
             modifier = Modifier.fillMaxWidth(),
@@ -79,7 +81,7 @@ fun SearchScreenContent(
                     modifier = Modifier
                         .clickable {
                             scope.launch {
-                                searchNew(query.value,markedFilter.value)
+                                searchNew(query.value, markedFilter.value)
                             }
                         }
                 )
@@ -130,9 +132,11 @@ fun SearchScreenContent(
             is LoadState.Error -> {
                 ErrorToLoadNews()
             }
+
             is LoadState.Loading -> {
                 LoadNews()
             }
+
             else -> {}
         }
 
@@ -140,9 +144,11 @@ fun SearchScreenContent(
             is LoadState.Error -> {
                 ErrorToLoadNews()
             }
+
             is LoadState.Loading -> {
                 ErrorPagination()
             }
+
             else -> {}
         }
     }

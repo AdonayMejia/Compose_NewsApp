@@ -19,21 +19,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.compose_newsapp.R
 import com.example.compose_newsapp.model.datamodel.NewsModel
-import com.example.compose_newsapp.model.navigation.BottomBarScreen
-import com.example.compose_newsapp.model.room.NewsEntity
 import java.net.URLEncoder
 
 @Composable
@@ -43,7 +38,7 @@ fun SearchNewsItem(
     navHostController: NavHostController
 ) {
     val url = URLEncoder.encode(article.webUrl,"UTF-8")
-    var isFilled by remember { mutableStateOf(false) }
+    val isFilled by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -66,13 +61,6 @@ fun SearchNewsItem(
                 text = article.webTitle,
                 style = MaterialTheme.typography.bodyLarge
             )
-//            Icon(
-//                modifier = Modifier
-//                    .clickable { onFavoriteClick(article,new) },
-//                painter = painterResource(
-//                    if (favoritesIdState.contains(article.id))
-//                )
-//            )
             IconButton(
                 onClick = {
                     onFavClick(article)

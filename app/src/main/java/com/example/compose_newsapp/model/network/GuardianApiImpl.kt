@@ -7,9 +7,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import io.ktor.http.append
 
-class GuardianApiImpl(private val client:HttpClient) : GuardianApiService {
+class GuardianApiImpl(private val client: HttpClient) : GuardianApiService {
 
     override suspend fun searchArticles(
         query: String,
@@ -18,19 +17,19 @@ class GuardianApiImpl(private val client:HttpClient) : GuardianApiService {
         filter: Filter
     ): GuardianApiResponse {
         return client.get("https://content.guardianapis.com/search") {
-            parameter(QUERY,query)
-            parameter(KEY,BuildConfig.GUARDIAN_API_KEY)
-            parameter(PAGE_SIZE,pageSize)
-            parameter(PAGE,page)
+            parameter(QUERY, query)
+            parameter(KEY, BuildConfig.GUARDIAN_API_KEY)
+            parameter(PAGE_SIZE, pageSize)
+            parameter(PAGE, page)
             parameter(SHOW_FIELDS, THUMBNAIL)
             filter.section?.let { parameter(SECTION, it) }
             filter.tag?.let { parameter(TAG, it) }
             filter.type?.let { parameter(TYPE, it) }
         }.body()
     }
-    companion object{
+
+    companion object {
         const val KEY = "api-key"
-        const val BASE_URL = "search"
         const val QUERY = "q"
         const val PAGE = "page"
         const val PAGE_SIZE = "page-size"
@@ -40,7 +39,6 @@ class GuardianApiImpl(private val client:HttpClient) : GuardianApiService {
         const val TAG = "tag"
         const val TYPE = "type"
     }
-
 
 
 }

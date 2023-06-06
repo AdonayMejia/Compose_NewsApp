@@ -14,14 +14,17 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ErrorToLoadNews() {
-    Column(modifier = Modifier.fillMaxSize(),
+    Column(
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally){
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
             textAlign = TextAlign.Center,
             fontSize = 20.sp,
             text = "There seems to be a problem loading the news",
-            maxLines = 2)
+            maxLines = 2
+        )
         CircularProgressIndicator()
     }
 }

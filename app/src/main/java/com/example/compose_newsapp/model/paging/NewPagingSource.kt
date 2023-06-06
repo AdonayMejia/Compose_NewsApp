@@ -8,9 +8,9 @@ import com.example.compose_newsapp.model.network.GuardianApiService
 
 class NewPagingSource(
     private val apiService: GuardianApiService,
-    private val query:String,
+    private val query: String,
     private val filter: Filter
-) : PagingSource<Int,NewsModel>() {
+) : PagingSource<Int, NewsModel>() {
 
     override fun getRefreshKey(state: PagingState<Int, NewsModel>): Int? {
         return state.anchorPosition?.let { anchorPosition ->

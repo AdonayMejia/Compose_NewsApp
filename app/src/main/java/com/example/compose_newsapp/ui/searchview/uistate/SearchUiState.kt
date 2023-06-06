@@ -10,5 +10,5 @@ import kotlinx.coroutines.flow.StateFlow
 data class SearchUiState(
     val news: List<NewsModel> = emptyList(),
     var isLoading: Boolean = false,
-    val searchNews: (String,Filter) -> Unit,
+    val searchNews: (String, Filter) -> Unit,
 )
