@@ -1,6 +1,6 @@
 # 📰 Compose_NewsApp
 
-This project is a simple news app, that allows users to search movies by it's name and add them to a favorites section, when they click on the movie that they search the app will show a second screen with a view that contains the website.
+This project is a simple news app, that allows users to search news by it's name and add them to a favorites section, when they click on the new that they search the app will show a second screen with a view that contains the website.
 
 ## 🔱 Functionality
 
